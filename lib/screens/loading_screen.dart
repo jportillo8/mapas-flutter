@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maps_flutter_x0/blocs/gps/blocks.dart';
+import 'package:maps_flutter_x0/blocs/blocks.dart';
 import 'package:maps_flutter_x0/screens/screens.dart';
 
 class LoadingScreen extends StatelessWidget {
