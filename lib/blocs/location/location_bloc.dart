@@ -12,6 +12,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   StreamSubscription<Position>? positionStream;
 
   LocationBloc() : super(const LocationState()) {
+    on<OnStartFollowingUser>(
+        (event, emit) => emit(state.copyWith(followingUser: true)));
+    on<OnStopFollowingUser>(
+        (event, emit) => emit(state.copyWith(followingUser: false)));
+
     on<OnNewUserLocationEvent>((event, emit) {
       emit(state.copyWith(
         lastKnowLocation: event.newLocation,
@@ -28,7 +33,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     add(OnNewUserLocationEvent(LatLng(position.latitude, position.longitude)));
   }
 
-  void starFollowingUser() {
+  void startFollowingUser() {
+    add(OnStartFollowingUser());
     // print('starFollowingUser');
     /*Se activa cada vez que la ubicación cambia dentro
      de los límites de [LocationSettings.accuracy] proporcionado.
@@ -47,6 +53,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   fugas de memoria*/
   void stopFollowingUser() {
     positionStream?.cancel();
+    add(OnStopFollowingUser());
     print('stopFollowingUser');
   }
 
@@ -54,7 +61,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   fugas de memoria*/
   @override
   Future<void> close() {
-    starFollowingUser();
+    startFollowingUser();
     return super.close();
   }
 }

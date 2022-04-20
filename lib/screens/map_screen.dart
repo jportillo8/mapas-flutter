@@ -17,25 +17,25 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     locationBloc = BlocProvider.of<LocationBloc>(context);
     // locationBloc.getCurrentPosition();
-    locationBloc.starFollowingUser();
+    locationBloc.startFollowingUser();
   }
 
   @override
   void dispose() {
-    locationBloc.starFollowingUser();
+    locationBloc.startFollowingUser();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Maps',
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 50)),
-      ),
-    );
+    return Scaffold(body: BlocBuilder<LocationBloc, LocationState>(
+      builder: (context, state) {
+        if (state.lastKnowLocation == null)
+          return const Center(child: Text('Espere please ...'));
+        return Center(
+            child: Text(
+                '${state.lastKnowLocation!.latitude}, ${state.lastKnowLocation!.longitude}'));
+      },
+    ));
   }
 }
