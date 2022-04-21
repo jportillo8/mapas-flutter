@@ -21,8 +21,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController = event.controller;
     /*Toda esa configuracion que no entendi para poder
     cambiar el estilo al mapa que nivel por Dios!!!*/
-    _mapController!.setMapStyle(jsonEncode(uberMapTheme));
+    _mapController!.setMapStyle(jsonEncode(uberMapThemeDark));
 
     emit(state.copyWith(isMapInitialized: true));
+  }
+
+  void movecamera(LatLng newLocation) {
+    final cameraUpdate = CameraUpdate.newLatLng(newLocation);
+    _mapController?.animateCamera(cameraUpdate);
   }
 }

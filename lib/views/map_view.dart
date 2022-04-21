@@ -29,7 +29,7 @@ class MapView extends StatelessWidget {
           // liteModeEnabled: true,
           initialCameraPosition: initialCameraPosition,
           myLocationButtonEnabled: false,
-          // zoomControlsEnabled: false,
+          zoomControlsEnabled: false,
           myLocationEnabled: true,
           compassEnabled: true,
 
