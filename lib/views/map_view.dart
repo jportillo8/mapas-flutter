@@ -23,23 +23,27 @@ class MapView extends StatelessWidget {
     return SizedBox(
         width: size.width,
         height: size.height,
-        child: GoogleMap(
-          // mapType: MapType.terrain,
-          // mapToolbarEnabled: true,
-          // liteModeEnabled: true,
-          initialCameraPosition: initialCameraPosition,
-          myLocationButtonEnabled: false,
-          zoomControlsEnabled: false,
-          myLocationEnabled: true,
-          compassEnabled: true,
+        child: Listener(
+          onPointerMove: (pointerMoveEvent) =>
+              mapBloc.add(OnStopMapFollowingUser()),
+          child: GoogleMap(
+            // mapType: MapType.terrain,
+            // mapToolbarEnabled: true,
+            // liteModeEnabled: true,
+            initialCameraPosition: initialCameraPosition,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: true,
+            myLocationEnabled: true,
+            compassEnabled: true,
 
-          //
-          onMapCreated: (controller) =>
-              mapBloc.add(OnMapInitializedEvent(controller)),
+            //
+            onMapCreated: (controller) =>
+                mapBloc.add(OnMapInitializedEvent(controller)),
 
-          // TODO Markers
-          // TODO polylines
-          // TODO Cuando se mueve el mapa
+            // TODO Markers
+            // TODO polylines
+            // TODO Cuando se mueve el mapa
+          ),
         ));
   }
 }

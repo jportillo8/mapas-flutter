@@ -4,20 +4,20 @@ class MapState extends Equatable {
   /*Variables para saber si el mapa esta cargado y
   para seguir o no al usuario*/
   final bool isMapInitialized;
-  final bool followUser;
+  final bool isFollowingUser;
 
-  const MapState({this.isMapInitialized = false, this.followUser = false});
+  const MapState({this.isMapInitialized = false, this.isFollowingUser = true});
 
   MapState copyWith({
     bool? isMapInitialized,
-    bool? followUser,
+    bool? isFollowingUser,
   }) =>
       MapState(
         isMapInitialized: isMapInitialized ?? this.isMapInitialized,
-        followUser: followUser ?? this.followUser,
+        isFollowingUser: isFollowingUser ?? this.isFollowingUser,
       );
 
   /*Esto para saber si un estado es diferente a otro*/
   @override
-  List<Object> get props => [isMapInitialized, followUser];
+  List<Object> get props => [isMapInitialized, isFollowingUser];
 }

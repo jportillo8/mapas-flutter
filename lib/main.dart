@@ -7,7 +7,11 @@ void main() {
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (context) => GpsBloc()),
     BlocProvider(create: (context) => LocationBloc()),
-    BlocProvider(create: (context) => MapBloc()),
+    /*Para crear la depencia ya definimos el bloc, y debemos pasarle lo datos
+    requeridos, mediante el contexto instaciado con los anteriores blocs*/
+    BlocProvider(
+        create: (context) =>
+            MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context))),
   ], child: const MapsApp()));
 }
 
