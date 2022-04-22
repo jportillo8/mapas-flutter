@@ -6,8 +6,12 @@ import 'package:maps_flutter_x0/blocs/blocks.dart';
 
 class MapView extends StatelessWidget {
   final LatLng initialLocation;
+  /*Agregando Polylines*/
+  final Set<Polyline> polylines;
 
-  const MapView({Key? key, required this.initialLocation}) : super(key: key);
+  const MapView(
+      {Key? key, required this.initialLocation, required this.polylines})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,8 @@ class MapView extends StatelessWidget {
             zoomControlsEnabled: true,
             myLocationEnabled: true,
             compassEnabled: true,
+            /*Agregando Polylines*/
+            polylines: polylines,
 
             //
             onMapCreated: (controller) =>

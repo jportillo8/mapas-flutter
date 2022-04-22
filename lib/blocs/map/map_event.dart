@@ -17,3 +17,12 @@ class OnMapInitializedEvent extends MapEvent {
 class OnStopMapFollowingUser extends MapEvent {}
 
 class OnStartMapFollowingUser extends MapEvent {}
+
+/*Polylines*/
+class UpdateUserPolylinesEvent extends MapEvent {
+  // Historial de ubicaciones.
+  final List<LatLng> userLocations;
+  const UpdateUserPolylinesEvent(this.userLocations);
+}
+
+class OnToogleUserRoute extends MapEvent {}
