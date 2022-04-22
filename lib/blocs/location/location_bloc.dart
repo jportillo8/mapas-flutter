@@ -61,7 +61,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   fugas de memoria*/
   @override
   Future<void> close() {
-    startFollowingUser();
+    stopFollowingUser();
     return super.close();
   }
 }
