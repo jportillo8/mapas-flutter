@@ -53,6 +53,7 @@ class _MapScreenState extends State<MapScreen> {
                     polylines: polylines.values.toSet(),
                   ),
                   // TODO Botones y mas ...
+                  const SearchBar()
                 ]),
               );
             },
