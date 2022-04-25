@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maps_flutter_x0/blocs/blocks.dart';
 import 'package:maps_flutter_x0/screens/screens.dart';
+import 'package:maps_flutter_x0/services/services.dart';
 
 void main() {
   runApp(MultiBlocProvider(providers: [
@@ -12,7 +13,10 @@ void main() {
     BlocProvider(
         create: (context) =>
             MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context))),
-    BlocProvider(create: (context) => SearchBloc())
+    BlocProvider(
+        /*De esta forma este bloc ya tiene acceso a cualquier propieda o metodo
+      de TrafficService*/
+        create: (context) => SearchBloc(trafficService: TrafficService()))
   ], child: const MapsApp()));
 }
 
