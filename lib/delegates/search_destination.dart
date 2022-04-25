@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:maps_flutter_x0/models/models.dart';
 
-class SearchDestinationDelegate extends SearchDelegate {
+/*En este caso retornaremos nuestro modelo SearchResult, por lo que esta
+definido en este Head*/
+class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
   SearchDestinationDelegate() : super(searchFieldLabel: 'Buscar...');
 
   @override
@@ -20,7 +23,8 @@ class SearchDestinationDelegate extends SearchDelegate {
     return IconButton(
       icon: Icon(Icons.arrow_back_ios),
       onPressed: () {
-        close(context, null);
+        final result = SearchResult(cancel: true);
+        close(context, result);
       },
     );
   }
@@ -36,8 +40,8 @@ class SearchDestinationDelegate extends SearchDelegate {
       children: [
         ListTile(
           onTap: () {
-            // TODO: regresar algo
-            close(context, null);
+            final result = SearchResult(cancel: false, manual: true);
+            close(context, result);
           },
           leading: const Icon(Icons.location_on_outlined, color: Colors.black),
           title: const Text('Colocar la ubicacion manualmente',

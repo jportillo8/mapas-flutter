@@ -13,9 +13,14 @@ class SearchBar extends StatelessWidget {
         width: double.infinity,
         height: 50,
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             /*En este punto de la app vamos a crear un buscador*/
-            showSearch(context: context, delegate: SearchDestinationDelegate());
+            final result = await showSearch(
+                context: context, delegate: SearchDestinationDelegate());
+            if (result == null) return;
+            /*En este punto sabemos las condiciones requeridas por
+            el usuario, si es cancel o es manual*/
+            print(result);
           },
           child: Container(
             decoration: BoxDecoration(
