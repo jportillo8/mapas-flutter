@@ -7,4 +7,8 @@ abstract class SearchEvent extends Equatable {
   List<Object> get props => [];
 }
 
+// Este evento activa el marcador y boton
 class OnActivateManualMarkerEvent extends SearchEvent {}
+
+// Este evento desactiva el marcador y boton
+class OnDeactivateManualMarkerEvent extends SearchEvent {}

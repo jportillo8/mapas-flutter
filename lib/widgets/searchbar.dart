@@ -1,8 +1,37 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps_flutter_x0/blocs/blocks.dart';
 import 'package:maps_flutter_x0/delegates/delegates.dart';
+import 'package:maps_flutter_x0/models/models.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return state.displayManualMarker
+            ? const SizedBox()
+            : FadeInDown(
+                duration: Duration(milliseconds: 300), child: _SearchBarBody());
+      },
+    );
+  }
+}
+
+class _SearchBarBody extends StatelessWidget {
+  const _SearchBarBody({Key? key}) : super(key: key);
+
+  /*Este metodo es para controlar el estado de el bloc search*/
+  void onSearchResults(BuildContext context, SearchResult result) {
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    if (result.manual == true) {
+      /*Disparo de el Evento manual*/
+      searchBloc.add(OnActivateManualMarkerEvent());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +49,7 @@ class SearchBar extends StatelessWidget {
             if (result == null) return;
             /*En este punto sabemos las condiciones requeridas por
             el usuario, si es cancel o es manual*/
+            onSearchResults(context, result);
             print(result);
           },
           child: Container(

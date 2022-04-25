@@ -1,8 +1,26 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps_flutter_x0/blocs/blocks.dart';
 
 class ManualMarker extends StatelessWidget {
   const ManualMarker({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        /*Averiguamos si el estado esta en true o false*/
+        return state.displayManualMarker
+            ? const _ManualMarkerBody()
+            : const SizedBox();
+      },
+    );
+  }
+}
+
+class _ManualMarkerBody extends StatelessWidget {
+  const _ManualMarkerBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +77,8 @@ class _BtnBack extends StatelessWidget {
         child: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: () {
-            // TODO: cancelar el marcador manual
+            final searchBloc = BlocProvider.of<SearchBloc>(context);
+            searchBloc.add(OnDeactivateManualMarkerEvent());
           },
         ),
       ),
