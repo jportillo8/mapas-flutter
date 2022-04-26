@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:maps_flutter_x0/blocs/blocks.dart';
+import 'package:maps_flutter_x0/helpers/helpers.dart';
 
 class ManualMarker extends StatelessWidget {
   const ManualMarker({Key? key}) : super(key: key);
@@ -70,7 +71,17 @@ class _ManualMarkerBody extends StatelessWidget {
                         final end = mapBloc.mapCenter;
                         if (end == null) return;
 
-                        await searchBloc.getCoorsStarrToEnd(start, end);
+                        showLoadingMessage(context);
+
+                        /*Esto nos regresa route destination
+                        aqui tenemos toda la info para que dibije la polyline*/
+                        final destination =
+                            await searchBloc.getCoorsStarrToEnd(start, end);
+                        await mapBloc.drawRoutePolyline(destination);
+
+                        /*Con el fin de quitar el boton entonces*/
+                        searchBloc.add(OnDeactivateManualMarkerEvent());
+                        Navigator.pop(context);
                       }),
                 )),
           ],

@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:maps_flutter_x0/blocs/blocks.dart';
+import 'package:maps_flutter_x0/models/models.dart';
 import 'package:maps_flutter_x0/themes/themes.dart';
 
 part 'map_event.dart';
@@ -38,6 +39,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     on<OnToogleUserRoute>(
         (event, emit) => emit(state.copyWith(showMyRoute: !state.showMyRoute)));
+
+    /*Dibujando las nuevas polylines*/
+    on<DisplayPolylinesEvent>(
+        (event, emit) => emit(state.copyWith(polylines: event.polylines)));
 
     /*Vamos a suscribirnos y escuchar lo eventos que el stream nos mande de location*/
     locationStateSubscription = locationBloc.stream.listen((locationState) {
@@ -83,6 +88,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
     currentPolylines['myRoute'] = myRoute;
     emit(state.copyWith(polylines: currentPolylines));
+  }
+
+  /*Con este nuevo metodo podremos dibijar las nuevas polylines*/
+  Future drawRoutePolyline(RouteDestination destination) async {
+    final myRoute = Polyline(
+      polylineId: PolylineId('route'),
+      color: Color.fromARGB(255, 114, 234, 105),
+      width: 3,
+      points: destination.points,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+    );
+
+    final currentPolyline = Map<String, Polyline>.from(state.polylines);
+    currentPolyline['route'] = myRoute;
+    // Disparando el evento
+    add(DisplayPolylinesEvent(currentPolyline));
   }
 
   void _onStartMapFollowingUser(
