@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_flutter_x0/models/models.dart';
 import 'package:maps_flutter_x0/services/services.dart';
 
 class TrafficService {
@@ -11,12 +12,15 @@ coordenadas e informacion de trafico*/
   TrafficService()
       : _dioTraffic = Dio()..interceptors.add(TrafficInterceptor());
 
-  Future getCoorsStartToEnd(LatLng start, LatLng end) async {
+  Future<TrafficResponse> getCoorsStartToEnd(LatLng start, LatLng end) async {
     final coorsString =
         '${start.longitude},${start.latitude};${end.longitude},${end.latitude}';
     final url = '$_baseTrafficUrl/driving/$coorsString';
 
     final resp = await _dioTraffic.get(url);
-    return resp.data;
+    /*Desppues de crear el modelo podemos mapear la respuesta
+    este es application json nota: si es text entonces seria fromJson()... */
+    final data = TrafficResponse.fromMap(resp.data);
+    return data;
   }
 }
