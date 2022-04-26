@@ -23,6 +23,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   /*Cerrando el Stream*/
   StreamSubscription<LocationState>? locationStateSubscription;
 
+  /*La siguiente variable la usamos para enviar una posicion final al peticion*/
+  LatLng? mapCenter;
+
   MapBloc({required this.locationBloc}) : super(const MapState()) {
     on<OnMapInitializedEvent>(_onInitMap);
 

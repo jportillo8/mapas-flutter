@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:maps_flutter_x0/blocs/blocks.dart';
 
 class ManualMarker extends StatelessWidget {
@@ -25,6 +28,13 @@ class _ManualMarkerBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    /*Con el fin de confirmar el destino a traves de las coordenadas*/
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    /*Con el  fin de saber la ultima ubicacion traemos el bloc Location*/
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
+    /*Con el  fin de saber la  ubicacion de la camara traemos el map Location*/
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+
     return SizedBox(
         width: size.width,
         height: size.height,
@@ -53,8 +63,14 @@ class _ManualMarkerBody extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
                           )),
-                      onPressed: () {
-                        // TODO: confirmar ubicacion
+                      onPressed: () async {
+                        // TODO : Loading
+                        final start = locationBloc.state.lastKnowLocation;
+                        if (start == null) return;
+                        final end = mapBloc.mapCenter;
+                        if (end == null) return;
+
+                        await searchBloc.getCoorsStarrToEnd(start, end);
                       }),
                 )),
           ],

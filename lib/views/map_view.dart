@@ -42,6 +42,11 @@ class MapView extends StatelessWidget {
             /*Agregando Polylines*/
             polylines: polylines,
 
+            /*Con esto obtendremos la end position usanado cameraMove*/
+            /*Esta variable esta en el bloc pero no en el state, por lo que no
+            queremos un cambio de redibujo*/
+            onCameraMove: (position) => mapBloc.mapCenter = position.target,
+
             //
             onMapCreated: (controller) =>
                 mapBloc.add(OnMapInitializedEvent(controller)),
