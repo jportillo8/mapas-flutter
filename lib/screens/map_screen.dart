@@ -51,6 +51,7 @@ class _MapScreenState extends State<MapScreen> {
                     initialLocation: locationState.lastKnowLocation!,
                     /*Convertimos los valores a el valor que necesita*/
                     polylines: polylines.values.toSet(),
+                    markers: mapState.markers.values.toSet(),
                   ),
                   // TODO Botones y mas ...
                   const SearchBar(),

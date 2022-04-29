@@ -8,9 +8,13 @@ class MapView extends StatelessWidget {
   final LatLng initialLocation;
   /*Agregando Polylines*/
   final Set<Polyline> polylines;
+  final Set<Marker> markers;
 
   const MapView(
-      {Key? key, required this.initialLocation, required this.polylines})
+      {Key? key,
+      required this.initialLocation,
+      required this.polylines,
+      required this.markers})
       : super(key: key);
 
   @override
@@ -35,12 +39,13 @@ class MapView extends StatelessWidget {
             // mapToolbarEnabled: true,
             // liteModeEnabled: true,
             initialCameraPosition: initialCameraPosition,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: true,
+            compassEnabled: false,
             myLocationEnabled: true,
-            compassEnabled: true,
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
             /*Agregando Polylines*/
             polylines: polylines,
+            markers: markers,
 
             /*Con esto obtendremos la end position usanado cameraMove*/
             /*Esta variable esta en el bloc pero no en el state, por lo que no

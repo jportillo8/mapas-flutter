@@ -30,6 +30,8 @@ class OnToogleUserRoute extends MapEvent {}
 /*Este evento es para el manejo de el dibujo de las polylines*/
 class DisplayPolylinesEvent extends MapEvent {
   final Map<String, Polyline> polylines;
+  // Añadimos los markers para poder dibujarlos
+  final Map<String, Marker> markers;
 
-  const DisplayPolylinesEvent(this.polylines);
+  const DisplayPolylinesEvent(this.polylines, this.markers);
 }

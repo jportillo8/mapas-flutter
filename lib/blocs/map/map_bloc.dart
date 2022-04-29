@@ -41,8 +41,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         (event, emit) => emit(state.copyWith(showMyRoute: !state.showMyRoute)));
 
     /*Dibujando las nuevas polylines*/
-    on<DisplayPolylinesEvent>(
-        (event, emit) => emit(state.copyWith(polylines: event.polylines)));
+    on<DisplayPolylinesEvent>((event, emit) => emit(
+        state.copyWith(polylines: event.polylines, markers: event.markers)));
 
     /*Vamos a suscribirnos y escuchar lo eventos que el stream nos mande de location*/
     locationStateSubscription = locationBloc.stream.listen((locationState) {
@@ -101,10 +101,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
     );
 
+    final startMarker =
+        Marker(markerId: MarkerId('start'), position: destination.points.first);
+
     final currentPolyline = Map<String, Polyline>.from(state.polylines);
     currentPolyline['route'] = myRoute;
+    final currentMarkers = Map<String, Marker>.from(state.markers);
+    currentMarkers['start'] = startMarker;
     // Disparando el evento
-    add(DisplayPolylinesEvent(currentPolyline));
+    add(DisplayPolylinesEvent(currentPolyline, currentMarkers));
   }
 
   void _onStartMapFollowingUser(
