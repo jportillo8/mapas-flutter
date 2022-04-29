@@ -12,3 +12,17 @@ class OnActivateManualMarkerEvent extends SearchEvent {}
 
 // Este evento desactiva el marcador y boton
 class OnDeactivateManualMarkerEvent extends SearchEvent {}
+
+// Este evento dispara los lugares cercanos
+class OnNewPlacesFoundEvent extends SearchEvent {
+  final List<Feature> places;
+
+  const OnNewPlacesFoundEvent(this.places);
+}
+
+// Este evento dispara la lista de historial
+class AddToHistoryEvent extends SearchEvent {
+  final Feature place;
+
+  const AddToHistoryEvent(this.place);
+}

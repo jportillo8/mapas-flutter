@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class TrafficInterceptor extends Interceptor {
+class PlacesInterceptor extends Interceptor {
   final accessToken =
       'pk.eyJ1IjoianBvcnRpbGxvOCIsImEiOiJja3VyNG9sMDQzazZrMzBwaHV1eDJ1M3ExIn0.B0G7xCSqb-W0ovrIeTtYhw';
   @override
@@ -8,10 +8,9 @@ class TrafficInterceptor extends Interceptor {
     /*Esta clase como su nombre lo indica intercepta la peticion http
     y vamos a continuacion configuramos los queryParmetres*/
     options.queryParameters.addAll({
-      'alternatives': true,
-      'geometries': 'polyline6',
-      'overview': 'simplified',
-      'steps': 'false',
+      'country': 'co',
+      'limit': 7,
+      'language': 'es',
       'access_token': accessToken
     });
 

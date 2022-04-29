@@ -7,10 +7,14 @@ class TrafficService {
 /*Basado en la geolocalizacion que informacion hay en esas 
 coordenadas e informacion de trafico*/
   final Dio _dioTraffic;
+  final Dio _dioPlaces;
   final String _baseTrafficUrl = 'https://api.mapbox.com/directions/v5/mapbox';
+  final String _basePlaceUrl =
+      'https://api.mapbox.com/geocoding/v5/mapbox.places';
   // Añadido interceptor.
   TrafficService()
-      : _dioTraffic = Dio()..interceptors.add(TrafficInterceptor());
+      : _dioTraffic = Dio()..interceptors.add(TrafficInterceptor()),
+        _dioPlaces = Dio()..interceptors.add(PlacesInterceptor());
 
   Future<TrafficResponse> getCoorsStartToEnd(LatLng start, LatLng end) async {
     final coorsString =
@@ -22,5 +26,20 @@ coordenadas e informacion de trafico*/
     este es application json nota: si es text entonces seria fromJson()... */
     final data = TrafficResponse.fromMap(resp.data);
     return data;
+  }
+
+  /*Funcion para el query es decir la palabra de objetivo de busqueda
+  en el search*/
+  Future<List<Feature>> getResultsByQuery(
+      LatLng proximity, String query) async {
+    if (query.isEmpty) return [];
+    final url = '$_basePlaceUrl/$query.json';
+    final resp = await _dioPlaces.get(url, queryParameters: {
+      'proximity': '${proximity.longitude},${proximity.latitude}'
+    });
+
+    final placesRespose = PlacesResponse.fromMap(resp.data);
+    print(resp);
+    return placesRespose.features; //Lugares => Features
   }
 }

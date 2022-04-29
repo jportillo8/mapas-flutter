@@ -25,12 +25,26 @@ class _SearchBarBody extends StatelessWidget {
   const _SearchBarBody({Key? key}) : super(key: key);
 
   /*Este metodo es para controlar el estado de el bloc search*/
-  void onSearchResults(BuildContext context, SearchResult result) {
+  void onSearchResults(BuildContext context, SearchResult result) async {
     final searchBloc = BlocProvider.of<SearchBloc>(context);
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
     if (result.manual == true) {
       /*Disparo de el Evento manual*/
       searchBloc.add(OnActivateManualMarkerEvent());
+      return;
     }
+    // TODO: revisar si tenemos result.position
+    if (result.position != null &&
+        locationBloc.state.lastKnowLocation != null) {
+      final destinationFind = await searchBloc.getCoorsStarrToEnd(
+          locationBloc.state.lastKnowLocation!, result.position!);
+      await mapBloc.drawRoutePolyline(destinationFind);
+    }
+
+    /*final destination =
+                            await searchBloc.getCoorsStarrToEnd(start, end);
+                        await mapBloc.drawRoutePolyline(destination);*/
   }
 
   @override
