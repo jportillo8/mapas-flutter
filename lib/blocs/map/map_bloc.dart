@@ -101,15 +101,34 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
     );
 
-    final startMarker =
-        Marker(markerId: MarkerId('start'), position: destination.points.first);
+    double kms = destination.distance / 1000;
+    kms = (kms * 100).floorToDouble();
+    kms /= 100;
+
+    double tripDuration = (destination.duration / 60).floorToDouble();
+
+    final startMarker = Marker(
+        markerId: MarkerId('start'),
+        position: destination.points.first,
+        infoWindow: InfoWindow(
+            title: 'Inicio', snippet: 'Kms: $kms, duration: $tripDuration'));
+    final endMarker = Marker(
+        markerId: MarkerId('end'),
+        position: destination.points.last,
+        infoWindow: const InfoWindow(
+            title: 'Fin', snippet: 'Este es el punto final de mi ruta'));
 
     final currentPolyline = Map<String, Polyline>.from(state.polylines);
     currentPolyline['route'] = myRoute;
+    // Markers
     final currentMarkers = Map<String, Marker>.from(state.markers);
     currentMarkers['start'] = startMarker;
+    currentMarkers['end'] = endMarker;
     // Disparando el evento
     add(DisplayPolylinesEvent(currentPolyline, currentMarkers));
+
+    await Future.delayed(const Duration(milliseconds: 300));
+    _mapController?.showMarkerInfoWindow(const MarkerId('start'));
   }
 
   void _onStartMapFollowingUser(
