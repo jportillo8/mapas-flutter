@@ -106,25 +106,33 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     kms = (kms * 100).floorToDouble();
     kms /= 100;
 
-    double tripDuration = (destination.duration / 60).floorToDouble();
+    // double tripDuration = (destination.duration / 60).floorToDouble();
+    int tripDuration = (destination.duration / 60).floorToDouble().toInt();
 
     // Custom Marker
-    final startMarkerIcon = await getAssetImage();
-    final endMarkerIcon = await getNetworkImage();
+    // final startMarkerIcon = await getAssetImage();
+    // final endMarkerIcon = await getNetworkImage();
+    final startMarkerIcon =
+        await getStartCustomMarker(tripDuration, 'Mi Ubicacion');
+    final endMarkerIcon =
+        await getEndCustomMarker(kms.toInt(), destination.endPlace.text);
 
     final startMarker = Marker(
-        markerId: MarkerId('start'),
-        position: destination.points.first,
-        icon: startMarkerIcon,
-        infoWindow: InfoWindow(
-            title: 'Inicio', snippet: 'Kms: $kms, duration: $tripDuration'));
+      anchor: const Offset(0.1, 1),
+      markerId: MarkerId('start'),
+      position: destination.points.first,
+      icon: startMarkerIcon,
+      // infoWindow: InfoWindow(
+      // title: 'Inicio', snippet: 'Kms: $kms, duration: $tripDuration')
+    );
     final endMarker = Marker(
-        markerId: MarkerId('end'),
-        position: destination.points.last,
-        icon: endMarkerIcon,
-        infoWindow: InfoWindow(
-            title: destination.endPlace.text,
-            snippet: destination.endPlace.placeName));
+      markerId: MarkerId('end'),
+      position: destination.points.last,
+      icon: endMarkerIcon,
+      // infoWindow: InfoWindow(
+      // title: destination.endPlace.text,
+      // snippet: destination.endPlace.placeName)
+    );
 
     final currentPolyline = Map<String, Polyline>.from(state.polylines);
     currentPolyline['route'] = myRoute;
@@ -136,7 +144,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     add(DisplayPolylinesEvent(currentPolyline, currentMarkers));
 
     await Future.delayed(const Duration(milliseconds: 300));
-    _mapController?.showMarkerInfoWindow(const MarkerId('start'));
+    // _mapController?.showMarkerInfoWindow(const MarkerId('start'));
   }
 
   void _onStartMapFollowingUser(
