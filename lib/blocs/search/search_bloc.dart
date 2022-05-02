@@ -33,6 +33,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final trafficResponse = await trafficService.getCoorsStartToEnd(start, end);
     // Esto se lo debemos mandar al mapBloc quien tiene el control de las polylines
 
+    // Informacion de el destino
+    final endPlace = await trafficService.getInfomationByCoors(end);
+
     /*Decodificando el geometry*/
     final geometry = trafficResponse.routes[0].geometry;
     final distance = trafficResponse.routes[0].distance;
@@ -44,7 +47,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         .toList();
 
     return RouteDestination(
-        points: latLngList, duration: duration, distance: distance);
+      points: latLngList,
+      duration: duration,
+      distance: distance,
+      endPlace: endPlace,
+    );
   }
 
   Future getPlacesByQuery(LatLng proximity, String query) async {

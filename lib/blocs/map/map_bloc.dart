@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:maps_flutter_x0/blocs/blocks.dart';
+import 'package:maps_flutter_x0/helpers/helpers.dart';
 import 'package:maps_flutter_x0/models/models.dart';
 import 'package:maps_flutter_x0/themes/themes.dart';
 
@@ -107,16 +108,23 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     double tripDuration = (destination.duration / 60).floorToDouble();
 
+    // Custom Marker
+    final startMarkerIcon = await getAssetImage();
+    final endMarkerIcon = await getNetworkImage();
+
     final startMarker = Marker(
         markerId: MarkerId('start'),
         position: destination.points.first,
+        icon: startMarkerIcon,
         infoWindow: InfoWindow(
             title: 'Inicio', snippet: 'Kms: $kms, duration: $tripDuration'));
     final endMarker = Marker(
         markerId: MarkerId('end'),
         position: destination.points.last,
-        infoWindow: const InfoWindow(
-            title: 'Fin', snippet: 'Este es el punto final de mi ruta'));
+        icon: endMarkerIcon,
+        infoWindow: InfoWindow(
+            title: destination.endPlace.text,
+            snippet: destination.endPlace.placeName));
 
     final currentPolyline = Map<String, Polyline>.from(state.polylines);
     currentPolyline['route'] = myRoute;

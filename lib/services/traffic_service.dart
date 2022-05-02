@@ -35,11 +35,21 @@ coordenadas e informacion de trafico*/
     if (query.isEmpty) return [];
     final url = '$_basePlaceUrl/$query.json';
     final resp = await _dioPlaces.get(url, queryParameters: {
-      'proximity': '${proximity.longitude},${proximity.latitude}'
+      'proximity': '${proximity.longitude},${proximity.latitude}',
+      'limit': 7
     });
 
     final placesRespose = PlacesResponse.fromMap(resp.data);
     print(resp);
     return placesRespose.features; //Lugares => Features
+  }
+
+  /*Geocoding Reverse*/
+  Future<Feature> getInfomationByCoors(LatLng coors) async {
+    final url = '$_basePlaceUrl/${coors.longitude},${coors.latitude}.json';
+    final resp = await _dioPlaces.get(url, queryParameters: {'limit': 1});
+
+    final placesResponse = PlacesResponse.fromMap(resp.data);
+    return placesResponse.features[0];
   }
 }

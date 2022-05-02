@@ -9,7 +9,7 @@ class PlacesInterceptor extends Interceptor {
     y vamos a continuacion configuramos los queryParmetres*/
     options.queryParameters.addAll({
       'country': 'co',
-      'limit': 7,
+      // 'limit': 7,
       'language': 'es',
       'access_token': accessToken
     });
